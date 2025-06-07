@@ -30,6 +30,9 @@ import decapCmsOauth from "astro-decap-cms-oauth";
 export default defineConfig({
   output: 'server',
   adapter: netlify(),
+    redirects: {
+        '/admin/oauth': '/.netlify/functions/oauth'
+    },
     image: {
         domains: ["webmention.io"],
     },
