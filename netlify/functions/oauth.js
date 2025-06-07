@@ -1,6 +1,8 @@
 exports.handler = async (event, context) => {
   const { httpMethod, queryStringParameters } = event;
 
+  console.log('OAuth function called with:', queryStringParameters);
+
   if (httpMethod !== "GET") {
     return {
       statusCode: 405,
@@ -30,6 +32,8 @@ exports.handler = async (event, context) => {
       `scope=${scope || 'repo'}&` +
       `state=${encodeURIComponent(state)}`;
 
+    console.log('Redirecting to GitHub:', githubAuthUrl);
+
     return {
       statusCode: 302,
       headers: {
@@ -41,6 +45,8 @@ exports.handler = async (event, context) => {
 
   // 情况2：GitHub回调（有code参数）
   if (code) {
+    console.log('Processing GitHub callback with code:', code);
+
     try {
       const response = await fetch("https://github.com/login/oauth/access_token", {
         method: "POST",
@@ -56,8 +62,10 @@ exports.handler = async (event, context) => {
       });
 
       const data = await response.json();
+      console.log('GitHub response:', data);
 
       if (data.access_token) {
+        console.log('Returning access token to CMS');
         return {
           statusCode: 200,
           headers: {
@@ -65,17 +73,33 @@ exports.handler = async (event, context) => {
           },
           body: `
             <script>
-              window.opener.postMessage({
-                token: "${data.access_token}",
-                provider: "github"
-              }, "*");
-              window.close();
+              console.log('Sending token to CMS:', '${data.access_token}');
+              if (window.opener) {
+                window.opener.postMessage({
+                  token: "${data.access_token}",
+                  provider: "github"
+                }, "*");
+                window.close();
+              } else {
+                console.error('No window.opener found');
+                document.body.innerHTML = '<p>Authentication successful! Please close this window.</p>';
+              }
             </script>
           `
+        };
+      } else {
+        console.error('No access token in response:', data);
+        return {
+          statusCode: 400,
+          body: JSON.stringify({ error: "Failed to get access token", details: data })
         };
       }
     } catch (error) {
       console.error("OAuth error:", error);
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: "Internal server error" })
+      };
     }
   }
 
