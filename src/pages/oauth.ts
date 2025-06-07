@@ -1,22 +1,28 @@
 import type { APIRoute } from 'astro';
 
-export const GET: APIRoute = async ({ url, redirect }) => {
-  // 手动重新建查询参数
-  const params = new URLSearchParams();
+export const GET: APIRoute = async ({ url }) => {
+  // 获取完整的查询字符串
+  const search = url.search || '';
 
-  // 获取所有查询参数
-  for (const [key, value] of url.searchParams.entries()) {
-    params.append(key, value);
-  }
-
-  // 构建查询字符串
-  const queryString = params.toString();
-  const targetUrl = queryString 
-    ? `/.netlify/functions/oauth?${queryString}`
-    : `/.netlify/functions/oauth`;
-
-  console.log('Original URL:', url.href);
-  console.log('Target URL:', targetUrl);
-
-  return redirect(targetUrl, 302);
+  return new Response(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Redirecting...</title>
+    </head>
+    <body>
+      <script>
+        window.location.href = '/.netlify/functions/oauth${search}';
+      </script>
+      <noscript>
+        <meta http-equiv="refresh" content="0;url=/.netlify/functions/oauth${search}">
+      </noscript>
+    </body>
+    </html>
+  `, {
+    status: 200,
+    headers: {
+      'Content-Type': 'text/html'
+    }
+  });
 };
