@@ -1,9 +1,9 @@
 backend:
   name: github
   branch: main # 修改为你的分支名称
-  repo: your-username/your-repo-name # 修改为你的 GitHub 仓库路径，格式：用户名/仓库名
-  site_domain: your-site-name.netlify.app # 修改为你的 Netlify 域名
-  base_url: https://your-site-name.netlify.app # 修改为你的 Netlify URL
+  repo: rplstie/Astro-theme-Cactus-zh # 修改为你的 GitHub 仓库路径，格式：用户名/仓库名
+  site_domain: mudotarrowmu.netlify.app/admin # 修改为你的 Netlify 域名
+  base_url: https://mudotarrowmu.netlify.app/admin # 修改为你的 Netlify URL
   auth_endpoint: oauth # OAuth 认证端点
 
 collections:
