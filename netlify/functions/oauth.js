@@ -71,15 +71,29 @@ exports.handler = async (event, context) => {
           headers: {
             "Content-Type": "text/html"
           },
+          // 在 GitHub 回调处理部分，修改返回的 HTML：
           body: `
             <script>
               console.log('Sending token to CMS:', '${data.access_token}');
+              console.log('Window opener exists:', !!window.opener);
+
               if (window.opener) {
-                window.opener.postMessage({
-                  token: "${data.access_token}",
-                  provider: "github"
-                }, "*");
-                window.close();
+                try {
+                  window.opener.postMessage({
+                    token: "${data.access_token}",
+                    provider: "github"
+                  }, "*");
+                  console.log('Message sent successfully');
+
+                  // 延迟关闭，给你时间查看调试信息
+                  setTimeout(() => {
+                    console.log('Closing window in 3 seconds...');
+                    setTimeout(() => window.close(), 3000);
+                  }, 1000);
+
+                } catch (error) {
+                  console.error('Error sending message:', error);
+                }
               } else {
                 console.error('No window.opener found');
                 document.body.innerHTML = '<p>Authentication successful! Please close this window.</p>';
