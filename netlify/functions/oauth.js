@@ -21,7 +21,11 @@ exports.handler = async (event, context) => {
   // 情况1：初始授权请求（没有code，但有provider）
   if (!code && provider === 'github') {
     const clientId = process.env.OAUTH_GITHUB_CLIENT_ID;
-    const redirectUri = `${new URL(event.headers.origin || 'https://mudotarrowmu.netlify.app')}/.netlify/functions/oauth`;
+    // 更可靠的方式
+    const origin = event.headers.origin || 
+                   `https://${event.headers.host}` || 
+                   'https://mudotarrowmu.netlify.app';
+    const redirectUri = `${origin}/.netlify/functions/oauth`;
     const state = site_id || ''; // 保存状态
 
     const githubAuthUrl = `https://github.com/login/oauth/authorize?` +
