@@ -1,7 +1,6 @@
 exports.handler = async (event, context) => {
   const { httpMethod, path, queryStringParameters } = event;
 
-  // 只处理 GET 请求到 /oauth 相关路径
   if (httpMethod !== "GET") {
     return {
       statusCode: 405,
@@ -9,14 +8,7 @@ exports.handler = async (event, context) => {
     };
   }
 
-  const { code } = queryStringParameters || {};
-
-  if (!code) {
-    return {
-      statusCode: 400,
-      body: JSON.stringify({ error: "Missing authorization code" })
-    };
-  }
+  const { code, provider, site_id, scope } = queryStringParameters || {};
 
   // 检查环境变量
   if (!process.env.OAUTH_GITHUB_CLIENT_ID || !process.env.OAUTH_GITHUB_CLIENT_SECRET) {
@@ -26,60 +18,90 @@ exports.handler = async (event, context) => {
     };
   }
 
-  try {
-    const response = await fetch("https://github.com/login/oauth/access_token", {
-      method: "POST",
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        client_id: process.env.OAUTH_GITHUB_CLIENT_ID,
-        client_secret: process.env.OAUTH_GITHUB_CLIENT_SECRET,
-        code: code
-      })
-    });
+  // 情况1：初始授权请求（没有code，但有provider）
+  if (!code && provider === 'github') {
+    const clientId = process.env.OAUTH_GITHUB_CLIENT_ID;
+    const redirectUri = `${new URL(event.headers.origin || 'https://mudotarrowmu.netlify.app')}/.netlify/functions/oauth`;
+    const state = site_id || ''; // 保存状态
 
-    if (!response.ok) {
-      throw new Error(`GitHub API error: ${response.status}`);
-    }
+    const githubAuthUrl = `https://github.com/login/oauth/authorize?` +
+      `client_id=${clientId}&` +
+      `redirect_uri=${encodeURIComponent(redirectUri)}&` +
+      `scope=${scope || 'repo'}&` +
+      `state=${encodeURIComponent(state)}`;
 
-    const data = await response.json();
-
-    if (data.error) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ error: data.error_description || data.error })
-      };
-    }
-
-    if (data.access_token) {
-      return {
-        statusCode: 200,
-        headers: {
-          "Content-Type": "text/html"
-        },
-        body: `
-          <script>
-            window.opener.postMessage({
-              token: "${data.access_token}",
-              provider: "github"
-            }, "*");
-            window.close();
-          </script>
-        `
-      };
-    } else {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ error: "Failed to get access token" })
-      };
-    }
-  } catch (error) {
-    console.error("OAuth error:", error);
     return {
-      statusCode: 500,
-      body: JSON.stringify({ error: "Internal server error" })
+      statusCode: 302,
+      headers: {
+        Location: githubAuthUrl
+      },
+      body: ''
     };
   }
+
+  // 情况2：GitHub回调（有code参数）
+  if (code) {
+    try {
+      const response = await fetch("https://github.com/login/oauth/access_token", {
+        method: "POST",
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          client_id: process.env.OAUTH_GITHUB_CLIENT_ID,
+          client_secret: process.env.OAUTH_GITHUB_CLIENT_SECRET,
+          code: code
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`GitHub API error: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (data.error) {
+        return {
+          statusCode: 400,
+          body: JSON.stringify({ error: data.error_description || data.error })
+        };
+      }
+
+      if (data.access_token) {
+        return {
+          statusCode: 200,
+          headers: {
+            "Content-Type": "text/html"
+          },
+          body: `
+            <script>
+              window.opener.postMessage({
+                token: "${data.access_token}",
+                provider: "github"
+              }, "*");
+              window.close();
+            </script>
+          `
+        };
+      } else {
+        return {
+          statusCode: 400,
+          body: JSON.stringify({ error: "Failed to get access token" })
+        };
+      }
+    } catch (error) {
+      console.error("OAuth error:", error);
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: "Internal server error" })
+      };
+    }
+  }
+
+  // 情况3：无效请求
+  return {
+    statusCode: 400,
+    body: JSON.stringify({ error: "Invalid OAuth request" })
+  };
 };
