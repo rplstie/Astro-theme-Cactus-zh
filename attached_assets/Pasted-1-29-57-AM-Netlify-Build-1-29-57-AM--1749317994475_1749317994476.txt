@@ -1,0 +1,58 @@
+1:29:57 AM: Netlify Build                                                 
+1:29:57 AM: ────────────────────────────────────────────────────────────────
+1:29:57 AM: ​
+1:29:57 AM: ❯ Version
+1:29:57 AM:   @netlify/build 33.4.3
+1:29:57 AM: ​
+1:29:57 AM: ❯ Flags
+1:29:57 AM:   accountId: 6843fabb650af71518e3c513
+1:29:57 AM:   baseRelDir: true
+1:29:57 AM:   buildId: 684476b817cd2b4ae7f9b665
+1:29:57 AM:   deployId: 684476b817cd2b4ae7f9b667
+1:29:57 AM: ​
+1:29:57 AM: ❯ Current directory
+1:29:57 AM:   /opt/build/repo
+1:29:57 AM: ​
+1:29:57 AM: ❯ Config file
+1:29:57 AM:   /opt/build/repo/netlify.toml
+1:29:57 AM: ​
+1:29:57 AM: ❯ Context
+1:29:57 AM:   production
+1:29:57 AM: ​
+1:29:57 AM: Configuration error                                           
+1:29:57 AM: ────────────────────────────────────────────────────────────────
+1:29:57 AM: ​
+1:29:57 AM:   Error message
+1:29:57 AM:   Plugins must be installed either in the Netlify App or in "package.json".
+1:29:57 AM:   Please run "npm install -D @netlify/plugin-functions" or "yarn add -D @netlify/plugin-functions".
+1:29:57 AM: ​
+1:29:57 AM:   Resolved config
+1:29:57 AM:   build:
+1:29:57 AM:     command: pnpm install --no-frozen-lockfile && pnpm run build
+1:29:57 AM:     commandOrigin: config
+1:29:57 AM:     environment:
+1:29:57 AM:       - OAUTH_GITHUB_CLIENT_ID
+1:29:57 AM:       - OAUTH_GITHUB_CLIENT_SECRET
+1:29:57 AM:       - NODE_VERSION
+1:29:57 AM:     publish: /opt/build/repo/dist
+1:29:57 AM:     publishOrigin: config
+1:29:57 AM:   functionsDirectory: /opt/build/repo/netlify/functions
+1:29:57 AM:   plugins:
+1:29:57 AM:     - inputs: {}
+1:29:57 AM:       origin: config
+1:29:57 AM:       package: '@netlify/plugin-functions'
+1:29:57 AM:   redirects:
+1:29:58 AM: Failed during stage 'building site': Build script returned non-zero exit code: 2 (https://ntl.fyi/exit-code-2)
+1:29:58 AM:     - from: /*
+      status: 404
+      to: /404.html
+    - from: /admin/*
+      status: 200
+      to: /admin/index.html
+    - from: /oauth/*
+      status: 200
+      to: /.netlify/functions/oauth
+  redirectsOrigin: config
+1:29:58 AM: Build failed due to a user error: Build script returned non-zero exit code: 2
+1:29:58 AM: Failing build: Failed to build site
+1:29:58 AM: Finished processing build request in 39.604s
