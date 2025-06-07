@@ -79,7 +79,9 @@ export default defineConfig({
         },
 		}), 
         decapCmsOauth({
-            oauthDisabled: true, // 禁用包的内置 OAuth 路由
+              oauthDisabled: false, // 重新启用，让 CMS 监听 postMessage
+              oauthLoginRoute: "/oauth-disabled", // 改为一个不存在的路由
+              oauthCallbackRoute: "/oauth-callback-disabled", // 改为一个不存在的路由
         })
     ],
     markdown: {
