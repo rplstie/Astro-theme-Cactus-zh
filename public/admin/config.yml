@@ -1,10 +1,10 @@
 backend:
   name: github
-  branch: main # change this to your branch
-  repo: example/cactus # 1、change this to your repo
-  site_domain: example.com # 2、change this to your domain
-  base_url: https://example.com # 3、change this to your prod URL
-  auth_endpoint: oauth # the oauth route provided by the integration
+  branch: main # 修改为你的分支名称
+  repo: your-username/your-repo-name # 修改为你的 GitHub 仓库路径，格式：用户名/仓库名
+  site_domain: your-site-name.netlify.app # 修改为你的 Netlify 域名
+  base_url: https://your-site-name.netlify.app # 修改为你的 Netlify URL
+  auth_endpoint: oauth # OAuth 认证端点
 
 collections:
   - name: "note"

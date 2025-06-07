@@ -1,0 +1,31 @@
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+[[plugins]]
+  package = "@netlify/plugin-functions"
+
+# 重定向配置，用于 SPA 路由
+[[redirects]]
+  from = "/*"
+  to = "/404.html"
+  status = 404
+
+# CMS 后台访问重定向
+[[redirects]]
+  from = "/admin/*"
+  to = "/admin/index.html"
+  status = 200
+
+# OAuth 回调处理
+[[redirects]]
+  from = "/oauth/*"
+  to = "/.netlify/functions/oauth"
+  status = 200
+
+[functions]
+  directory = "netlify/functions"

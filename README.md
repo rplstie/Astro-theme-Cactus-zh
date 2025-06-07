@@ -15,20 +15,71 @@ Astro 仙人掌 是一个基于 Astro 框架的博客主题，使用 Astro 和 T
 
 ## 快速开始 🚀
 
-### A、网页编辑模式
+### A、网页编辑模式（Netlify 部署）
 
-教学视频：[【零基础】【零成本】搭建一个属于自己的Astro博客网站](https://www.bilibili.com/video/BV18eCpYcEAk)
+1. **Fork 项目到 GitHub**
+   - 点击 Fork 按钮，复制本项目到你的 GitHub 仓库
 
-1. 点击 Fork 按钮，复制本项目到你的GitHub 仓库
-2. [Vercel](vercel.com) 注册登录，关联 GitHub 账户，导入仓库
-3. 添加一个[GitHub认证](https://github.com/settings/applications/new)，得到 Oauth ID 和 secret
-  - Homepage URL —— https://你的域名
-  - Authorization callback URL —— https://域名/oauth/callback
-4. 在 Vercel -> Settings -> Environment Variables，添加2个环境变量
-  - OAUTH_GITHUB_CLIENT_ID ->  Oauth ID
-  - OAUTH_GITHUB_CLIENT_SECRET ->  Oauth secret
-5. 修改GitHub仓库 `public/admin/config.yml`，修改 `repo`、`site_domain`、`base_url`
-6. 通过访问 `你的域名/admin` 访问博客后台，进行编辑、发布文章
+2. **创建 GitHub OAuth 应用**
+   - 访问 [GitHub Settings > Developer settings > OAuth Apps](https://github.com/settings/applications/new)
+   - 创建新的 OAuth 应用，填写以下信息：
+     - **Application name**: 你的应用名称（如：我的博客）
+     - **Homepage URL**: `https://你的站点名.netlify.app`
+     - **Authorization callback URL**: `https://你的站点名.netlify.app/oauth/callback`
+   - 记录生成的 **Client ID** 和 **Client Secret**
+
+3. **部署到 Netlify**
+   - 访问 [Netlify](https://netlify.com) 并注册登录
+   - 点击 "New site from Git"
+   - 选择 GitHub 并授权访问
+   - 选择你刚才 Fork 的仓库
+   - 构建设置：
+     - **Build command**: `npm run build`
+     - **Publish directory**: `dist`
+   - 点击 "Deploy site"
+
+4. **配置环境变量**
+   - 在 Netlify 项目设置中，进入 **Site settings** > **Environment variables**
+   - 添加以下环境变量：
+     - `OAUTH_GITHUB_CLIENT_ID`: 你的 GitHub OAuth Client ID
+     - `OAUTH_GITHUB_CLIENT_SECRET`: 你的 GitHub OAuth Client Secret
+
+5. **修改 CMS 配置**
+   - 编辑 `public/admin/config.yml` 文件：
+   ```yaml
+   backend:
+     name: github
+     branch: main
+     repo: 你的用户名/你的仓库名  # 例如：johndoe/my-blog
+     site_domain: 你的站点名.netlify.app  # 例如：my-awesome-blog.netlify.app
+     base_url: https://你的站点名.netlify.app
+     auth_endpoint: oauth
+   ```
+
+6. **重新部署**
+   - 提交配置更改到 GitHub
+   - Netlify 将自动重新部署
+
+7. **访问博客**
+   - **前台**: `https://你的站点名.netlify.app`
+   - **后台管理**: `https://你的站点名.netlify.app/admin`
+
+### CMS 配置参数详解
+
+在 `public/admin/config.yml` 中的关键参数：
+
+- **repo**: GitHub 仓库路径，格式为 `用户名/仓库名`
+- **site_domain**: 你的 Netlify 站点域名（可在 Netlify 项目设置中查看或自定义）
+- **base_url**: 完整的站点 URL，用于 OAuth 认证
+- **auth_endpoint**: OAuth 认证端点，固定为 `oauth`
+
+### 自定义域名（可选）
+
+如果你有自己的域名：
+1. 在 Netlify 项目设置中添加自定义域名
+2. 配置 DNS 记录指向 Netlify
+3. 更新 `config.yml` 中的 `site_domain` 和 `base_url`
+4. 更新 GitHub OAuth 应用中的 URL 设置
 
 
 
