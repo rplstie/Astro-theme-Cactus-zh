@@ -2,9 +2,12 @@ backend:
   name: github
   branch: main # 修改为你的分支名称
   repo: rplstie/Astro-theme-Cactus-zh # 修改为你的 GitHub 仓库路径，格式：用户名/仓库名
-  site_domain: mudotarrowmu.netlify.app/admin # 修改为你的 Netlify 域名
-  base_url: https://mudotarrowmu.netlify.app/admin # 修改为你的 Netlify URL
-  auth_endpoint: /oauth # OAuth 认证端点
+  site_domain: mudotarrowmu.netlify.app # 修改为你的 Netlify 域名
+  base_url: https://mudotarrowmu.netlify.app # 修改为你的 Netlify URL
+  auth_endpoint: oauth # OAuth 认证端点
+
+media_folder: "src/assets/images" # 文件将被存储在仓库中的位置
+public_folder: "/assets/images" # 上传媒体文件的 src 属性
 
 collections:
   - name: "note"
@@ -61,7 +64,3 @@ collections:
           required: true,
         }
       - { label: "正文", name: "body", widget: "markdown" }
-
-media_folder: "src/assets/images" # 文件将被存储在仓库中的位置
-public_folder: "/assets/images" # 上传媒体文件的 src 属性
-

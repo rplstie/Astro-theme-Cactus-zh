@@ -5,28 +5,8 @@
 [build.environment]
   NODE_VERSION = "18"
 
-[functions]
-  directory = "netlify/functions"
-
-# 重定向配置
+# 不需要任何 OAuth 相关的重定向了！
 [[redirects]]
   from = "/*"
   to = "/404.html"
   status = 404
-
-[[redirects]]
-  from = "/admin/*"
-  to = "/admin/index.html"
-  status = 200
-
-# 添加这个新的重定向 - 放在前面，优先级更高
-[[redirects]]
-  from = "/admin/oauth"
-  to = "/.netlify/functions/oauth"
-  status = 200
-
-# 保留原有的 OAuth 重定向作为备用
-[[redirects]]
-  from = "/oauth/*"
-  to = "/.netlify/functions/oauth"
-  status = 200

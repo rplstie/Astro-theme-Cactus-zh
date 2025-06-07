@@ -30,9 +30,6 @@ import decapCmsOauth from "astro-decap-cms-oauth";
 export default defineConfig({
   output: 'static',
   adapter: netlify(),
-    redirects: {
-        '/admin/oauth': '/.netlify/functions/oauth'
-    },
     image: {
         domains: ["webmention.io"],
     },
@@ -113,7 +110,7 @@ export default defineConfig({
     prefetchAll: true,
   },
     // ! 改为你的网站地址，不然社交图片无法加载
-    site: "https://demo.343700.xyz/",
+    site: "https://mudotarrowmu.netlify.app/",
     vite: {
         optimizeDeps: {
             exclude: ["@resvg/resvg-js"],
