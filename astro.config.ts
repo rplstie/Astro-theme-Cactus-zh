@@ -77,7 +77,11 @@ export default defineConfig({
             insertThemeColorMeta: false,
             insertManifestLink: false,
         },
-		}), decapCmsOauth()],
+		}), 
+        decapCmsOauth({
+            oauthDisabled: true, // 禁用包的内置 OAuth 路由
+        })
+    ],
     markdown: {
         rehypePlugins: [
             [
@@ -110,7 +114,7 @@ export default defineConfig({
     prefetchAll: true,
   },
     // ! 改为你的网站地址，不然社交图片无法加载
-    site: "https://mudotarrowmu.netlify.app/",
+    site: "https://mudotarrowmu.netlify.app",
     vite: {
         optimizeDeps: {
             exclude: ["@resvg/resvg-js"],
