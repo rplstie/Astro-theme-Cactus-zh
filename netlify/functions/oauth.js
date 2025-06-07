@@ -1,11 +1,11 @@
-export const handler = async (event, context) => {
+exports.handler = async (event, context) => {
   const { httpMethod, path, queryStringParameters } = event;
 
-  // 只处理 GET 请求到 /oauth/callback
-  if (httpMethod !== "GET" || !path.includes("/oauth/callback")) {
+  // 只处理 GET 请求到 /oauth 相关路径
+  if (httpMethod !== "GET") {
     return {
-      statusCode: 404,
-      body: JSON.stringify({ error: "Not found" })
+      statusCode: 405,
+      body: JSON.stringify({ error: "Method not allowed" })
     };
   }
 
