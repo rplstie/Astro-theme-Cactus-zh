@@ -6,44 +6,22 @@
 	:root,
 	:root[data-theme="light"] {
 		color-scheme: light;
-		/* 现代清爽配色 - 明亮主题 */
-		--theme-bg: 0deg 0% 100%;
-		--theme-link: 217deg 91% 60%; /* 现代蓝色链接 */
-		--theme-text: 215deg 20% 25%; /* 深灰文字 */
-		--theme-accent: 262deg 83% 58%; /* 现代紫色强调 */
-		--theme-accent-2: 215deg 25% 27%; /* 深色标题 */
-		--theme-quote: 142deg 76% 36%; /* 清新绿色引用 */
+		/* https://tailwindcss.com/docs/customizing-colors#using-css-variables */
+		--theme-bg: 0deg 0% 98%;
+		--theme-link: 172deg 18% 41%;
+		--theme-text: 203deg 11% 15%;
+		--theme-accent: 351deg 66% 48%;
+		--theme-accent-2: 0deg 0% 7%;
+		--theme-quote: 351deg 66% 48%;
 	}
 
 	:root[data-theme="dark"] {
 		color-scheme: dark;
-		/* 现代清爽配色 - 暗黑主题 */
-		--theme-bg: 222deg 84% 5%; /* 深色背景 */
-		--theme-link: 217deg 91% 70%; /* 亮蓝色链接 */
-		--theme-text: 213deg 27% 84%; /* 浅灰文字 */
-		--theme-accent: 262deg 83% 68%; /* 亮紫色强调 */
-		--theme-accent-2: 213deg 31% 91%; /* 浅色标题 */
-		--theme-quote: 142deg 76% 46%; /* 亮绿色引用 */
-	}
-
-	/* 响应式容器宽度优化 */
-	.container {
-		width: 96% !important;
-		max-width: none !important;
-	}
-
-	/* 内容区域宽度优化 */
-	.content-area {
-		width: 98% !important;
-	}
-
-	/* 表格响应式优化 */
-	table {
-		width: 98% !important;
-	}
-
-	/* 文章内容区域优化 */
-	.prose {
-		max-width: 98% !important;
+		--theme-bg: 210deg 6% 12%;
+		--theme-link: 330deg 49% 67%;
+		--theme-text: 220deg 3% 79%;
+		--theme-accent: 159deg 64% 45%;
+		--theme-accent-2: 0deg 0% 93%;
+		--theme-quote: 102deg 100% 86%;
 	}
 }
