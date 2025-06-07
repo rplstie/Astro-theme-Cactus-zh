@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 
 export const GET: APIRoute = async ({ url, redirect }) => {
-  // 手动重建查询参数
+  // 手动重新建查询参数
   const params = new URLSearchParams();
 
   // 获取所有查询参数
