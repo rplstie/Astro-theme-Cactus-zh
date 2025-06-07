@@ -36,6 +36,23 @@ export default {
 	],
 	theme: {
 		extend: {
+			container: {
+				center: true,
+				padding: {
+					DEFAULT: '2%',
+					sm: '2%',
+					lg: '2%',
+					xl: '2%',
+					'2xl': '2%',
+				},
+				screens: {
+					sm: '100%',
+					md: '100%',
+					lg: '100%',
+					xl: '100%',
+					'2xl': '100%',
+				},
+			},
       	colors: {
 				accent: "hsl(var(--theme-accent) / <alpha-value>)",
 				"accent-2": "hsl(var(--theme-accent-2) / <alpha-value>)",

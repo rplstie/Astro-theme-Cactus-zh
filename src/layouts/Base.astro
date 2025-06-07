@@ -25,15 +25,19 @@ const {
 		/></head
 	>
 	<!-- 修改 max-w-6xl 最大宽度-->
-	<body
-		class="mx-auto flex min-h-screen max-w-4xl flex-col bg-bgColor px-4 pt-16 font-mono text-sm font-normal text-textColor antialiased sm:px-8"
-	>
+	<body class="bg-bgColor text-textColor">
 		<ThemeProvider />
 		<SkipLink />
-		<Header />
-		<main id="main">
-			<slot />
-		</main>
-		<Footer />
+		<div class="container mx-auto">
+			<Header />
+			<main id="main" class="content-area mx-auto">
+				<slot />
+			</main>
+			<Footer />
+		</div>
+		<div id="search" class="hidden"></div>
+		<script>
+			import "@pagefind/default-ui/css/ui.css";
+		</script>
 	</body>
 </html>
